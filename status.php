@@ -16,4 +16,6 @@ function sendStatus($bot_token, $chat_id, $status)
 
 
 sendStatus($argv[1], $argv[2], $argv[3]);
+
+
 ?>
