@@ -26,6 +26,9 @@ jobs:
         - name: PHP Runner
           uses: franzliedke/gh-action-php@0.3.0
         - uses: martialonline/workflow-status@v2
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: main 
           id: check
         - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} failed
           if: steps.check.outputs.status == 'failure'
