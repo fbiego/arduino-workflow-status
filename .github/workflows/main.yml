@@ -1,0 +1,36 @@
+name: Status
+on:
+  push:
+    
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+        
+        - name: checkout repo content
+          uses: actions/checkout@v2 # checkout the repository content to github runner.
+        - name: PHP Runner
+          uses: franzliedke/gh-action-php@0.3.0
+        - name: execute py script # run the run.py to get the latest data
+          run: |
+              php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} running
+      
+    notification:
+      name: Notify
+      runs-on: ubuntu-18.04
+      needs: [build]
+      if: always()
+      steps: 
+        - name: checkout repo content
+          uses: actions/checkout@v2 # checkout the repository content to github runner.
+        - name: PHP Runner
+          uses: franzliedke/gh-action-php@0.3.0
+        - uses: martialonline/workflow-status@v2
+          id: check
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} failed
+          if: steps.check.outputs.status == 'failure'
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} cancelled
+          if: steps.check.outputs.status == 'cancelled'
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} success
+          if: steps.check.outputs.status == 'success'
+          
