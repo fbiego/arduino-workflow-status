@@ -11,9 +11,9 @@ jobs:
           uses: actions/checkout@v2 # checkout the repository content to github runner.
         - name: PHP Runner
           uses: franzliedke/gh-action-php@0.3.0
-        - name: execute py script # run the run.py to get the latest data
+        - name: execute php script
           run: |
-              php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} running
+              php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} /running
       
     notification:
       name: Notify
