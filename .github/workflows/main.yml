@@ -14,11 +14,6 @@ jobs:
         - name: execute php script
           run: |
               php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} /running
-        - name: push changes
-          uses: ad-m/github-push-action@v0.6.0
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: main 
       
     notification:
       name: Notify
@@ -32,10 +27,10 @@ jobs:
           uses: franzliedke/gh-action-php@0.3.0
         - uses: martialonline/workflow-status@v2
           id: check
-        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} failed
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} /failing
           if: steps.check.outputs.status == 'failure'
-        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} cancelled
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} /cancelled
           if: steps.check.outputs.status == 'cancelled'
-        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} success
+        - run: php status.php ${{ secrets.BOT_TOKEN }} ${{ secrets.CHAT_ID }} /passing
           if: steps.check.outputs.status == 'success'
           
